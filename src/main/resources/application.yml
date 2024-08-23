@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: InkManager
+  datasource:
+    driverClassName: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/inkmanager
+    username: postgres
+    password: mrRabetao@192837
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: none
