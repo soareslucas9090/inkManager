@@ -12,34 +12,34 @@ CREATE TABLE public.users (
 
 ALTER SEQUENCE public.users_id_users_seq OWNED BY public.users.id_users;
 
-CREATE SEQUENCE public.worktype_worktype_id_seq;
+CREATE SEQUENCE public.worktype_id_worktype_seq;
 
 CREATE TABLE public.worktype (
-                worktype_id BIGINT NOT NULL DEFAULT nextval('public.worktype_worktype_id_seq'),
+                id_worktype BIGINT NOT NULL DEFAULT nextval('public.worktype_id_worktype_seq'),
                 name VARCHAR NOT NULL,
                 deleted_at DATE,
                 id_users BIGINT NOT NULL,
-                CONSTRAINT worktype_pk PRIMARY KEY (worktype_id)
+                CONSTRAINT worktype_pk PRIMARY KEY (id_worktype)
 );
 
 
-ALTER SEQUENCE public.worktype_worktype_id_seq OWNED BY public.worktype.worktype_id;
+ALTER SEQUENCE public.worktype_id_worktype_seq OWNED BY public.worktype.id_worktype;
 
-CREATE SEQUENCE public.work_work_id_seq;
+CREATE SEQUENCE public.work_id_work_seq;
 
 CREATE TABLE public.work (
-                work_id BIGINT NOT NULL DEFAULT nextval('public.work_work_id_seq'),
+                id_work BIGINT NOT NULL DEFAULT nextval('public.work_id_work_seq'),
                 client_name VARCHAR NOT NULL,
                 description VARCHAR NOT NULL,
                 scheduled_date DATE NOT NULL,
-                completed_date VARCHAR NOT NULL,
+                completed_date DATE NOT NULL,
                 id_users BIGINT NOT NULL,
-                worktype_id BIGINT NOT NULL,
-                CONSTRAINT work_pk PRIMARY KEY (work_id)
+                id_worktype BIGINT NOT NULL,
+                CONSTRAINT work_pk PRIMARY KEY (id_work)
 );
 
 
-ALTER SEQUENCE public.work_work_id_seq OWNED BY public.work.work_id;
+ALTER SEQUENCE public.work_id_work_seq OWNED BY public.work.id_work;
 
 CREATE SEQUENCE public.material_id_material_seq;
 
@@ -50,6 +50,7 @@ CREATE TABLE public.material (
                 quantity REAL NOT NULL,
                 image_url VARCHAR NOT NULL,
                 unit VARCHAR NOT NULL,
+                deleted_at DATE,
                 id_users BIGINT NOT NULL,
                 CONSTRAINT material_pk PRIMARY KEY (id_material)
 );
@@ -59,9 +60,9 @@ ALTER SEQUENCE public.material_id_material_seq OWNED BY public.material.id_mater
 
 CREATE TABLE public.workmaterial (
                 id_material BIGINT NOT NULL,
-                work_id BIGINT NOT NULL,
+                id_work BIGINT NOT NULL,
                 used_quantity REAL NOT NULL,
-                CONSTRAINT workmaterial_pk PRIMARY KEY (id_material, work_id)
+                CONSTRAINT workmaterial_pk PRIMARY KEY (id_material, id_work)
 );
 
 
@@ -87,15 +88,15 @@ ON UPDATE NO ACTION
 NOT DEFERRABLE;
 
 ALTER TABLE public.work ADD CONSTRAINT worktype_work_fk
-FOREIGN KEY (worktype_id)
-REFERENCES public.worktype (worktype_id)
+FOREIGN KEY (id_worktype)
+REFERENCES public.worktype (id_worktype)
 ON DELETE NO ACTION
 ON UPDATE NO ACTION
 NOT DEFERRABLE;
 
 ALTER TABLE public.workmaterial ADD CONSTRAINT work_workmaterial_fk
-FOREIGN KEY (work_id)
-REFERENCES public.work (work_id)
+FOREIGN KEY (id_work)
+REFERENCES public.work (id_work)
 ON DELETE NO ACTION
 ON UPDATE NO ACTION
 NOT DEFERRABLE;
